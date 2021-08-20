@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        :root
+        {
+            --top-start: 224px;
+            --width-block: 128px;
+            --height-block: 108px;
+        }
+
+        body
+        {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('./images/background-2.png');
+            animation: background-run 10s linear infinite;
+        }
+
+        @keyframes background-run {
+            to
+            {
+                background-position: 64px;
+            }
+        }
+
+        #view
+        {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .row
+        {
+            position: absolute;
+            top: var(--top-row);
+            left: var(--left-row);
+        }
+
+        .block
+        {
+            background: url('images/scenery.svg');
+            width: var(--width-block);
+            height: var(--height-block);
+            background-repeat: no-repeat;
+            display: inline-flex;
+            position: absolute;
+            top: var(--top-block);
+            left: var(--left-block);
+        }
+
+        .block-black {
+            background-position: 0px -834px;
+        }
+
+        .block-white {
+            background-position: 0px -960px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="view">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const view = $('#view');
+            const len = 8;
+            let isBlackFirst = true;
+            for (var i = 0; i < len; i++) {
+                view.append(`<div class="row" style="--top-row: calc(0px + (${i} * (1/4 * var(--width-block))));
+                        --left-row: calc(0px + (${i} * (1/2 * var(--width-block))));z-index: ${i}"></div>`)
+                const row = $('.row').eq(i);
+                for (var j = 0; j < len; j++) {
+                    isBlackFirst === true ? (function(){
+                        row.append(`<div class="block-black block" style="--top-block: calc(var(--top-start) - (${j} * (1/4 * var(--width-block))));
+                        --left-block: calc(0px + (${j} * (1/2 * var(--width-block))));z-index: ${-j}"></div>`)
+                        isBlackFirst= false})():
+                    (function(){
+                        row.append(`<div class="block-white block" style="--top-block: calc(var(--top-start) - (${j} * (1/4 * var(--width-block))));
+                        --left-block: calc(0px + (${j} * (1/2 * var(--width-block))));z-index: ${-j}"></div>`)
+                        isBlackFirst= true
+                    })()
+                    if(j===len-1)
+                    {
+                        isBlackFirst= !isBlackFirst
+                    }
+                }
+            }
+            $('.block').click(function(){
+                alert($(this).css('top'))
+            })
+        })
+
+    </script>
+</body>
+
+</html>
